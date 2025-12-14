@@ -1,0 +1,695 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Plastify — Out Ai</title>
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='assets/logo.png') }}" />
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+
+  <!-- Fonts -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Montserrat:wght@700;800&display=swap"
+    rel="stylesheet">
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    :root {
+      --accent-main: #0055cc;
+      --muted: #6b7280;
+      --bg: #0f172a;
+      --ease: cubic-bezier(.2, .9, .2, 1);
+    }
+      html, body {
+  height: 100%;
+}
+/* ================= HIDE SCROLLBAR (KEEP SCROLLING) ================= */
+
+/* Chrome, Edge, Safari */
+html::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+/* Firefox */
+html {
+  scrollbar-width: none;
+}
+
+/* Old Edge / IE */
+html {
+  -ms-overflow-style: none;
+}
+
+body {
+  background-color:#fff;
+  padding-top: 90px;     /* fixed navbar height */
+  margin: 0;
+
+  display: flex;
+  flex-direction: column;
+}
+
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    /* ------------ NAVBAR ------------ */
+      .navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1050;
+  background: white;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  padding: 0.9rem 0;
+}
+
+    .navbar-brand img {
+      height: 38px;
+      width: auto;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+
+    .navbar-brand-text {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 800;
+      font-size: 1.45rem;
+      color: rgb(58, 151, 151);
+      vertical-align: middle;
+    }
+
+    .nav-centered {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 1.25rem;
+    }
+
+    .nav-centered .nav-link {
+      font-weight: 600;
+      color: #0f1a2a;
+      padding: 6px 10px;
+      border-radius: 6px;
+    }
+
+    .nav-centered .nav-link:hover {
+      color: var(--accent-main);
+      background: #eef3ff;
+    }
+
+    @media(max-width:992px) {
+      .nav-centered {
+        position: static;
+        transform: none;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-top: 10px;
+      }
+    }
+
+     section.container {
+        padding: 60px 20px;
+        margin-bottom: 0;
+      }
+
+      .c1 {
+        position: relative;
+        height: 400px;
+        width: 100%;
+        background-image: url("{{ url_for('static', filename='assets/try.jpg') }}");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+
+        margin-bottom: 40px; /* Normal spacing */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        color: white;
+        animation: fadeZoom 1.2s ease-out forwards;
+  opacity: 0;
+      }
+      @keyframes fadeZoom {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.sp{
+  color: deeppink;
+}
+
+      .c1:last-of-type {
+        margin-bottom: 10px; /* Small gap before footer */
+      }
+
+      /* Transparent overlay */
+      .c1::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.4);
+        z-index: 1;
+      }
+
+      .c1 * {
+        position: relative;
+        z-index: 2;
+      }
+
+      .c1 .section-title {
+        font-size: 2.5rem;
+        margin-bottom: 15px;
+      }
+
+      .c1 .section-desc {
+        font-size: 1.1rem;
+        margin-bottom: 20px;
+        max-width: 700px;
+      }
+
+      .c1 .btn-custom {
+        background-color: #007bb7;
+        color: white;
+        font-weight: 600;
+        padding: 12px 30px;
+        border-radius: 10px;
+        transition: background 0.3s;
+      }
+
+      .c1 .btn-custom:hover {
+        background-color: #28a745;
+      }
+    
+ /* ------------------ MODERN FOOTER WITH BLUE HOVER ------------------ */
+
+footer.site-footer {
+  background: #000;  
+  padding: 55px 25px;
+  border-top: 1px solid rgba(255, 255, 255, 0.18);
+  color: #fff;
+  margin-top: 70px;
+}
+
+.footer-inner {
+  max-width: 1250px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 40px;
+}
+
+/* Brand / Headings – stay white always */
+.footer-brand {
+  font-size: 1.4rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  color: #fff; /* always white */
+  margin-bottom: 12px;
+}
+
+/* Description text */
+.footer-desc {
+  font-size: 14px;
+  line-height: 1.65;
+  opacity: 0.85;
+  margin-top: 10px;
+}
+
+/* Social Icons */
+.socials {
+  display: flex;
+  gap: 12px;
+  margin-top: 15px;
+}
+
+.socials a {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.08);
+  border-radius: 50%;
+  color: #fff;
+  font-size: 18px;
+  transition: 0.25s ease;
+  text-decoration: none !important;         /* REMOVE UNDERLINE */
+}
+
+.socials a:hover {
+  background: #00d2ff;
+  transform: translateY(-4px);
+  color: #000 !important;
+  text-decoration: none !important;         /* Ensure no underline */
+}
+
+/* Footer Links – turn BLUE on hover */
+.footer-links a {
+  display: block;
+  font-size: 15px;
+  color: #fff;
+  opacity: 0.7;
+  margin: 7px 0;
+  text-decoration: none;
+  transition: 0.25s ease;
+}
+
+.footer-links a:hover {
+  opacity: 1;
+  padding-left: 6px;
+  color: #00aaff !important;               /* BLUE TEXT ON HOVER */
+}
+
+/* Legal text */
+.legal {
+  margin-top: 18px;
+  font-size: 13px;
+  opacity: 0.6;
+  transition: 0.25s ease;
+}
+
+.legal:hover {
+  opacity: 1;
+  color: #00aaff !important;               /* BLUE COPYRIGHT TEXT */
+}
+/* Make modal smaller */
+.modal-dialog {
+  max-width: 600px !important;
+}
+
+/* Reduce spacing between fields */
+.modal-body .mb-3 {
+  margin-bottom: 10px !important;
+}
+
+/* Compact inputs */
+.modal-body .form-control,
+.modal-body .form-select {
+  padding: 6px 10px;
+  font-size: 0.9rem;
+}
+
+/* Use two columns for clean compact layout */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px 15px;
+}
+
+/* Make last full-width fields */
+.form-grid .full {
+  grid-column: span 2;
+}
+
+/* FUTURE SCOPE CARD HOVER EFFECT */
+#future-scope .card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#future-scope .card:hover {
+  transform: translateY(-10px) scale(1.03);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+
+  </style>
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg">
+    <div class="container position-relative">
+
+      <a class="navbar-brand d-flex align-items-center" href="#">
+        <img src="{{ url_for('static', filename='assets/logo.png') }}" alt="Logo">
+        <span class="navbar-brand-text">Plastify</span>
+      </a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="nav-centered d-none d-lg-flex">
+        <a class="nav-link" href="{{ url_for('index') }}">Home</a>
+      <a class="nav-link" href="{{ url_for('about') }}">About</a>
+      <a class="nav-link" href="{{ url_for('ourai') }}">Our AI</a>
+      <a class="nav-link" href="{{ url_for('contact') }}">Contact</a>
+      </div>
+
+    </div>
+  </nav>
+
+  <!-- YOUR ABOUT PAGE CONTENT STARTS BELOW -->
+    <main>
+      <section class="container">
+        <div class="c1 rounded">
+          <h2 class="section-title"><span class="text-warning">Plasti</span><span class="sp">FY</span></h2>
+          <p class="section-desc">
+           Plastify is a cutting-edge AI project designed to provide predictive analytics for industrial applications. 
+    It combines robust Full Stack Development with advanced Data Science solutions to deliver actionable insights, 
+    streamline operations, and integrate seamlessly into enterprise systems.
+          </p>
+          <button class="btn btn-custom text-white" data-bs-toggle="modal" data-bs-target="#tryNowModal">Try Now</button>
+        </div>
+   </section>
+       <!-- FUTURE SCOPE SECTION START -->
+<section class="container my-5" id="future-scope">
+  <h1 class="mb-4 text-center">Future Scope</h1>
+  <p class="text-center mb-5">
+    Plastify is continuously evolving. Here are some exciting future directions for this project:
+  </p>
+
+  <div class="row g-4 justify-content-center">
+    <div class="col-md-4">
+      <div class="card p-3 text-center shadow-sm border-0" style="border-radius:12px;">
+        <h5 class="mb-3"><b>Real-Time Analytics</b></h5>
+        <p>Implement real-time dashboards for instant insights on plastic collection, grading, and recycling efficiency.</p>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card p-3 text-center shadow-sm border-0" style="border-radius:12px;">
+        <h5 class="mb-3"><b>AI Model Expansion</b></h5>
+        <p>Integrate additional AI models for advanced plastic type recognition, contamination detection, and automated sorting.</p>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card p-3 text-center shadow-sm border-0" style="border-radius:12px;">
+        <h5 class="mb-3"><b>Mobile & Edge Deployment</b></h5>
+        <p>Deploy edge-friendly AI models on mobile and IoT devices for on-site predictions without cloud dependency.</p>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card p-3 text-center shadow-sm border-0" style="border-radius:12px;">
+        <h5 class="mb-3"><b>Integration with ERP</b></h5>
+        <p>Seamless integration with enterprise resource planning systems to optimize inventory, supply chain, and recycling operations.</p>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card p-3 text-center shadow-sm border-0" style="border-radius:12px;">
+        <h5 class="mb-3"><b>Predictive Maintenance</b></h5>
+        <p>Use AI to forecast equipment wear and optimize the maintenance schedule for recycling and sorting machines.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+<!-- FUTURE SCOPE SECTION END -->
+    <!-- FAQ SECTION START -->
+<section class="container my-5" id="faq">
+  <h2 class="mb-4 text-center">Frequently Asked Questions</h2>
+  <div class="accordion" id="faqAccordion">
+
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="faqHeadingOne">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapseOne" aria-expanded="false" aria-controls="faqCollapseOne">
+          What is Plastify?
+        </button>
+      </h2>
+      <div id="faqCollapseOne" class="accordion-collapse collapse" aria-labelledby="faqHeadingOne" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">
+          Plastify is an AI-driven solution designed to provide predictive analytics for industrial applications. It integrates Full Stack Development with Data Science to deliver actionable insights.
+        </div>
+      </div>
+    </div>
+
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="faqHeadingTwo">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapseTwo" aria-expanded="false" aria-controls="faqCollapseTwo">
+          How does Plastify help with recycling?
+        </button>
+      </h2>
+      <div id="faqCollapseTwo" class="accordion-collapse collapse" aria-labelledby="faqHeadingTwo" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">
+          Plastify uses computer vision and classification models to identify, sort, and grade plastic materials, helping businesses optimize recycling workflows and track quality.
+        </div>
+      </div>
+    </div>
+
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="faqHeadingThree">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapseThree" aria-expanded="false" aria-controls="faqCollapseThree">
+          Can I integrate Plastify into my existing systems?
+        </button>
+      </h2>
+      <div id="faqCollapseThree" class="accordion-collapse collapse" aria-labelledby="faqHeadingThree" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">
+          Yes, Plastify is designed for enterprise integration and can be deployed on-site or in the cloud, allowing seamless connection to your current systems and dashboards.
+        </div>
+      </div>
+    </div>
+
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="faqHeadingFour">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapseFour" aria-expanded="false" aria-controls="faqCollapseFour">
+          How do I start using Plastify?
+        </button>
+      </h2>
+      <div id="faqCollapseFour" class="accordion-collapse collapse" aria-labelledby="faqHeadingFour" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">
+          You can start by filling out the “Try Now” form to submit your plastic item details, and our system will provide predictive insights and recommendations.
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+<!-- FAQ SECTION END -->
+
+
+    </main>
+
+ <footer class="site-footer">
+    <div class="footer-inner">
+
+      <div>
+        <div class="footer-brand">PLASTIFY</div>
+        <div class="footer-desc">
+          Industrial AI solutions — infrastructure, 
+          model ops and secure production deployments. Clean, scalable, 
+          and built for enterprise integration
+        </div>
+
+        <div class="socials">
+          <a href="https://facebook.com"><i class="fab fa-facebook-f"></i></a>
+          <a href="https://instagram.com"><i class="fab fa-instagram"></i></a>
+          <a href="https://linkedin.com"><i class="fab fa-linkedin-in"></i></a>
+          <a href="https://github.com"><i class="fab fa-github"></i></a>
+        </div>
+      </div>
+
+      <div>
+        <div class="footer-brand" style="font-size: 1rem;">Quick Links</div>
+        <div class="footer-links">
+          <a class="nav-link" href="{{ url_for('index') }}">Home</a>
+      <a class="nav-link" href="{{ url_for('about') }}">About</a>
+      <a class="nav-link" href="{{ url_for('ourai') }}">Our AI</a>
+      <a class="nav-link" href="{{ url_for('contact') }}">Contact</a>
+        </div>
+      </div>
+
+      <div>
+        <div class="footer-brand" style="font-size: 1rem;">Resources</div>
+        <div class="footer-links">
+          <a href="https://cloud.google.com/resources/content/state-of-ai-infrastructure">AI Infrastructure</a>
+          <a href="https://www.evidentlyai.com/ml-in-production/model-monitoring">Model Monitoring</a>
+          <a href="https://owasp.org/www-project-spvs/">Secure Pipelines</a>
+          <a href="https://en.wikipedia.org/wiki/Automation">Automation</a>
+          <a href="https://www.geeksforgeeks.org/software-engineering/software-deployment-in-software-development/">Deployments</a>
+        </div>
+      </div>
+
+      <div>
+        <div class="footer-brand" style="font-size: 1rem;">Team & Partners</div>
+        <div class="footer-links">
+          <a>FullStack</a>
+          <a>Data Science</a>
+        </div>
+
+        <div class="legal">© <span id="year"></span> PLASTIFY · All rights reserved</div>
+      </div>
+    </div>
+  </footer>
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<!-- ===================== TRY NOW MODAL ===================== -->
+<div class="modal fade" id="tryNowModal" tabindex="-1" aria-labelledby="tryNowModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content" style="border-radius: 15px; background-color: #fff; color: #000;">
+
+      <div class="modal-header border-0">
+        <h5 class="modal-title fw-bold" id="tryNowModalLabel">Enter Plastic Item Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+
+        <form id="plasticForm">
+
+          <div class="form-grid">
+
+            <div class="mb-3">
+              <label class="form-label">Item Category</label>
+              <input type="text" class="form-control" name="item_category" required>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Material Texture</label>
+              <select class="form-select" name="material_texture" required>
+                <option disabled selected>Select</option>
+                <option>Soft Plastic</option>
+                <option>Hard Plastic</option>
+                <option>Thin Film</option>
+                <option>nan</option>
+              </select>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Item Color</label>
+              <select class="form-select" name="item_color" required>
+                <option disabled selected>Select</option>
+                <option>White</option>
+                <option>Colored</option>
+                <option>Transparent</option>
+                <option>Mixed</option>
+                <option>Black</option>
+                <option>nan</option>
+              </select>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Approximate Size</label>
+              <select class="form-select" name="approximate_size" required>
+                <option disabled selected>Select</option>
+                <option>Small</option>
+                <option>Medium</option>
+                <option>Bulk</option>
+                <option>Large</option>
+              </select>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Approximate Quantity</label>
+              <input type="number" class="form-control" name="approximate_quantity">
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">condition</label>
+              <select class="form-select" name="condition">
+                <option disabled selected>Select</option>
+                <option>Poor</option>
+                <option>Average</option>
+                <option>Good</option>
+                <option>nan</option>
+              </select>
+            </div>
+
+            <div class="mb-3 full">
+              <label class="form-label">Item Usage</label>
+              <select class="form-select" name="item_usage">
+                <option disabled selected>Select</option>
+                <option>Household use</option>
+                <option>Commercial Packaging</option>
+                <option>Industrial Use</option>
+                <option>Food Packaging</option>
+              </select>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Recycling Symbol</label>
+              <select class="form-select" name="recycling_symbol">
+                <option disabled selected>Select</option>
+                <option>No</option>
+                <option>Not Sure</option>
+                <option>Yes</option>
+                <option>nan</option>
+              </select>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">location</label>
+              <input type="text" class="form-control" name="location">
+            </div>
+
+          </div>
+
+          <div class="mt-3 text-center">
+            <button type="submit" class="btn btn-primary px-4 py-2">Submit</button>
+          </div>
+          <div id="predictionResult" class="alert alert-success  d-none"></div>
+
+
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.getElementById("plasticForm").addEventListener("submit", async function (e) {
+  e.preventDefault();
+
+  const formData = new FormData(this);
+  const payload = {};
+  formData.forEach((v, k) => payload[k] = v);
+
+  console.log("Payload:", payload); // debug
+
+  const res = await fetch("/predict", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  });
+
+  const result = await res.json();
+  console.log("API Response:", result); // debug
+
+  const box = document.getElementById("predictionResult");
+  box.classList.remove("d-none");
+
+  if (result.status !== "success") {
+    box.className = "alert alert-danger mt-3";
+    box.innerText = result.message || "Prediction failed";
+    return;
+  }
+
+  box.className = "alert alert-success mt-3";
+  box.innerHTML = `
+    <b>Prediction Result</b><br><br>
+    ♻️ Recycle Score: <b>${result.scores.Recycle}</b><br>
+    🔁 Reuse Score: <b>${result.scores.Reuse}</b><br>
+    💰 Resale Score: <b>${result.scores.Resale}</b><br><br>
+    ✅ <b>Best Recommendation:</b> ${result.recommendation}
+  `;
+});
+</script>
+
+
+
+</body>
+</html>
+

@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Plastify — Intelligent Industrial AI</title>
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='assets/logo.png') }}" />
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    :root{
+      --accent-main:#0055cc;
+      --muted:#6b7280;
+      --bg:#0f172a;
+      --ease: cubic-bezier(.2,.9,.2,1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    /* ---------------- SCROLLBAR HIDE ---------------- */
+    html {
+      scrollbar-width: none; /* Firefox */
+      -ms-overflow-style: none; /* IE 10+ */
+      overflow-y: scroll; /* allow scroll */
+    }
+    html::-webkit-scrollbar {
+      width: 0px; /* Chrome, Safari, Edge */
+      background: transparent;
+    }
+    body {
+      overflow: auto;
+    }
+
+    /* ------------ NAVBAR ------------ */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1030;
+      background: white;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      padding: 0.9rem 0;
+    }
+    .navbar-brand img{ height:38px; width:auto; margin-right:8px; vertical-align:middle; }
+    .navbar-brand-text{ font-family:'Montserrat', sans-serif; font-weight:800; font-size:1.45rem; color:rgb(58,151,151); vertical-align:middle; }
+    .nav-centered{ position:absolute; left:50%; transform:translateX(-50%); display:flex; gap:1.25rem; }
+    .nav-centered .nav-link{ font-weight:600; color:#0f1a2a; padding:6px 10px; border-radius:6px; }
+    .nav-centered .nav-link:hover{ color:var(--accent-main); background:#eef3ff; }
+    @media(max-width:992px){ .nav-centered{ position:static; transform:none; flex-wrap:wrap; justify-content:center; margin-top:10px; } }
+
+    /* ------------ HERO ------------ */
+    .hero{
+      min-height:72vh; background: url("{{ url_for('static', filename='assets/Banner.png') }}") center/cover no-repeat;
+      display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden;
+    }
+    .hero::before{
+      content:""; position:absolute; inset:0; background:linear-gradient(180deg,rgba(15,23,42,0.28),rgba(15,23,42,0.55));
+    }
+    .hero-inner{ position:relative; z-index:2; text-align:center; padding:40px; transform:translateZ(0); }
+    .hero h1{ color:white; font-size:2.6rem; font-weight:700; margin:0 0 12px; opacity:0; transform:translateY(14px); transition:opacity .6s var(--ease), transform .6s var(--ease); }
+    .hero p{ color:#ffffffd9; max-width:850px; margin:auto; opacity:0; transform:translateY(14px); transition:opacity .6s var(--ease) .08s, transform .6s var(--ease) .08s; }
+
+    /* small hover/tilt effect for pointer users */
+    .hero[data-tilt="true"] .hero-inner { transition: transform .22s var(--ease); will-change: transform; }
+
+    /* ------------ ABOUT / IMAGES ------------ */
+    .about-section{ padding:4rem 0; }
+    .card-feature{ border:0; box-shadow:0 8px 30px rgba(0,0,0,0.05); }
+
+    .img-reveal { opacity:0; transform: translateY(18px) scale(.995); transition: opacity .7s var(--ease), transform .7s var(--ease); will-change: opacity, transform; }
+    .img-reveal.visible { opacity:1; transform:none; }
+
+    .text-reveal { opacity:0; transform: translateY(12px); transition: opacity .6s var(--ease), transform .6s var(--ease); will-change: opacity, transform; }
+    .text-reveal.visible { opacity:1; transform:none; }
+
+    /* ------------ OUR AI CARDS ------------ */
+    .ourai-section{
+      background: url("{{ url_for('static', filename='assets/banner-2.jpg') }}")
+            center / cover no-repeat;
+
+      padding:60px 0 120px; color:white; position:relative;
+    }
+    .ourai-section::before{ content:""; position:absolute; inset:0; background:rgba(6,14,23,0.78); }
+    .ourai-inner{ position:relative; z-index:2; text-align:center; max-width:1000px; margin:auto; padding:20px; }
+    .underline-accent{ width:90px; height:4px; background:var(--accent-main); margin:16px auto; opacity:0; transform: translateY(8px); transition: opacity .6s var(--ease), transform .6s var(--ease); }
+    .underline-accent.visible { opacity:1; transform:none; }
+
+    .ourai-cards-wrap{ display:flex; gap:20px; flex-wrap:wrap; justify-content:center; margin-top:18px; }
+    .ourai-card{
+      background:rgba(6,18,28,0.55); padding:22px; border-radius:12px;
+      border:1px solid rgba(255,255,255,0.1); color:white; min-width:260px;
+      flex:0 0 calc(33% - 20px); backdrop-filter:blur(6px); transition: transform .32s var(--ease), box-shadow .32s var(--ease), opacity .6s var(--ease), transform .6s var(--ease);
+      opacity:0; transform:translateY(18px);
+    }
+    .ourai-card.visible { opacity:1; transform:none; }
+    .ourai-card:hover{ transform: translateY(-8px) scale(1.01); box-shadow:0 30px 60px rgba(2,8,23,0.6); }
+    @media(max-width:768px){ .ourai-card{ flex:0 0 100%; } }
+
+    /* ------------ FOOTER ------------ */
+    footer.site-footer {
+      background: #000;  
+      padding: 55px 25px;
+      border-top: 1px solid rgba(255, 255, 255, 0.18);
+      color: #fff;
+      margin-top: 70px;
+    }
+    .footer-inner { max-width: 1250px; margin:auto; display:grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 40px; }
+    .footer-brand { font-size:1.4rem; font-weight:800; color:#fff; margin-bottom:12px; }
+    .footer-desc { font-size:14px; line-height:1.65; opacity:0.85; margin-top:10px; }
+    .socials { display:flex; gap:12px; margin-top:15px; }
+    .socials a { width:42px; height:42px; display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,0.08); border-radius:50%; color:#fff; font-size:18px; transition:0.25s ease; text-decoration:none !important; }
+    .socials a:hover { background:#00d2ff; transform:translateY(-4px); color:#000 !important; text-decoration:none !important; }
+    .footer-links a { display:block; font-size:15px; color:#fff; opacity:0.7; margin:7px 0; text-decoration:none; transition:0.25s ease; }
+    .footer-links a:hover { opacity:1; padding-left:6px; color:#00aaff !important; }
+    .legal { margin-top:18px; font-size:13px; opacity:0.6; transition:0.25s ease; }
+    .legal:hover { opacity:1; color:#00aaff !important; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hero h1, .hero p, .img-reveal, .text-reveal, .ourai-card, .underline-accent, footer {
+        transition: none !important;
+      }
+      .hero[data-tilt="true"] .hero-inner { transform: none !important; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg">
+    <div class="container position-relative">
+      <a class="navbar-brand d-flex align-items-center" href="#">
+        <img src="{{ url_for('static', filename='assets/logo.png') }}" alt="Logo">
+        <span class="navbar-brand-text">Plastify</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="nav-centered d-none d-lg-flex">
+        <a class="nav-link" href="{{ url_for('index') }}">Home</a>
+      <a class="nav-link" href="{{ url_for('about') }}">About</a>
+      <a class="nav-link" href="{{ url_for('ourai') }}">Our AI</a>
+      <a class="nav-link" href="{{ url_for('contact') }}">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header id="home" class="hero" data-tilt="true">
+    <div class="hero-inner">
+      <h1 class="text-reveal">Where the best build<br>Intelligent Solutions</h1>
+      <p class="text-reveal" style="transition-delay:.08s">We’re building intelligent solutions for the next generation of business enterprises—where the best of human + machine-learning intersect to reinvent business operations.</p>
+    </div>
+  </header>
+
+  <!-- ABOUT -->
+  <section id="about" class="about-section">
+    <div class="container">
+      <div class="row g-5 align-items-center">
+        <div class="col-lg-6">
+          <img src="{{ url_for('static', filename='assets/image-4.jpg') }}" class="img-fluid rounded shadow-sm img-reveal" alt="AI for recycling">
+        </div>
+        <div class="col-lg-6">
+          <h2 class="text-reveal"><b>AI Technology</b></h2>
+          <p class="text-reveal text-muted" style="transition-delay:.06s">Artificial Intelligence enables machines to analyze, classify, and make decisions from data. In industrial and sustainability contexts, AI improves accuracy, reduces manual effort, and optimizes processes for better outcomes.</p>
+          <div class="row mt-4">
+            <div class="col-md-6 mb-3">
+              <div class="card card-feature p-3 text-reveal" style="transition-delay:.12s">
+                <h5><b>Machine Learning</b></h5>
+                <p class="text-muted">Systems learn patterns automatically from data to improve decision-making over time.</p>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <div class="card card-feature p-3 text-reveal" style="transition-delay:.18s">
+                <h5><b>Computer Vision</b></h5>
+                <p class="text-muted">AI models interpret images to detect objects, materials, and conditions with high accuracy.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OUR AI -->
+  <section id="ourai" class="ourai-section">
+    <div class="ourai-inner">
+      <h2 class="text-reveal"><b>Our AI Capabilities</b></h2>
+      <div class="underline-accent" id="underline"></div>
+      <p class="text-reveal" style="transition-delay:.06s">Plastify combines computer vision, classification models and simple edge integrations so businesses can deploy on-site or in the cloud. Typical use-cases include automated grading for resale, contamination detection for recycling, and inventory analytics to optimise recovery.</p>
+
+      <div class="ourai-cards-wrap">
+        <div class="ourai-card" style="transition-delay:.12s">
+          <h5><b>Collection Insights</b></h5>
+          <p>Analytics dashboards that show composition, volumes and recovery opportunities.</p>
+        </div>
+        <div class="ourai-card" style="transition-delay:.18s">
+          <h5><b>Edge-friendly Models</b></h5>
+          <p>Lightweight inference for cameras and mobile devices used in the field.</p>
+        </div>
+        <div class="ourai-card" style="transition-delay:.24s">
+          <h5><b>Traceability</b></h5>
+          <p>Attach quality metadata to batches so downstream buyers can make informed decisions.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div>
+        <div class="footer-brand">PLASTIFY</div>
+        <div class="footer-desc">Industrial AI solutions — infrastructure, model ops and secure production deployments. Clean, scalable, and built for enterprise integration</div>
+        <div class="socials">
+          <a href="https://facebook.com"><i class="fab fa-facebook-f"></i></a>
+          <a href="https://instagram.com"><i class="fab fa-instagram"></i></a>
+          <a href="https://linkedin.com"><i class="fab fa-linkedin-in"></i></a>
+          <a href="https://github.com"><i class="fab fa-github"></i></a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-brand" style="font-size: 1rem;">Quick Links</div>
+        <div class="footer-links">
+          <a href="{{ url_for('index') }}">Home</a>
+      <a href="{{ url_for('about') }}">About</a>
+      <a href="{{ url_for('ourai') }}">OurAI</a>
+      <a href="{{ url_for('contact') }}">Contact</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-brand" style="font-size: 1rem;">Resources</div>
+        <div class="footer-links">
+          <a href="https://cloud.google.com/resources/content/state-of-ai-infrastructure">AI Infrastructure</a>
+          <a href="https://www.evidentlyai.com/ml-in-production/model-monitoring">Model Monitoring</a>
+          <a href="https://owasp.org/www-project-spvs/">Secure Pipelines</a>
+          <a href="https://en.wikipedia.org/wiki/Automation">Automation</a>
+          <a href="https://www.geeksforgeeks.org/software-engineering/software-deployment-in-software-development/">Deployments</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-brand" style="font-size: 1rem;">Team & Partners</div>
+        <div class="footer-links">
+          <a>FullStack</a>
+          <a>Data Science</a>
+        </div>
+        <div class="legal">© <span id="year"></span> PLASTIFY · All rights reserved</div>
+      </div>
+    </div>
+  </footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+(function(){
+  const prefersReduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const revealSelectors = ['.text-reveal', '.img-reveal', '.ourai-card', '.underline-accent', 'footer'];
+  const elements = Array.from(document.querySelectorAll(revealSelectors.join(',')));
+
+  if (!prefersReduce && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    elements.forEach(el => io.observe(el));
+  } else {
+    elements.forEach(el => el.classList.add('visible'));
+  }
+
+  const hero = document.querySelector('.hero');
+  const heroInner = document.querySelector('.hero-inner');
+  if (!prefersReduce && hero && heroInner) {
+    hero.addEventListener('mousemove', (e) => {
+      const rect = hero.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+      heroInner.style.transform = `rotateX(${-y*6}deg) rotateY(${x*6}deg)`;
+    });
+    hero.addEventListener('mouseleave', () => heroInner.style.transform = 'none');
+  }
+
+  // set year
+  const yr = document.getElementById('year');
+  if (yr) yr.textContent = new Date().getFullYear();
+
+})();
+</script>
+</body>
+</html>
